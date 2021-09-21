@@ -1,0 +1,6 @@
+[master]
+master_ip
+
+
+[slave]
+mslaves_ip
