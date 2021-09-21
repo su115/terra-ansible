@@ -46,5 +46,21 @@ output "vpc"{
 output "subnet"{
 	value=aws_subnet.sub1.id
 }
+
 # -----------------------------------------------
+
+# EIP
+resource "aws_eip" "eip"{
+	vpc=true
+}
+
+
+# NAT GATEWAY to sub 1
+resource "aws_nat_gateway" "ngw1"{
+	allocation_id=aws_eip.eip.id
+	subnet_id=aws_subnet.sub1.id
+	tags={
+		Name="Nat Gateway1"
+	}
+}
 

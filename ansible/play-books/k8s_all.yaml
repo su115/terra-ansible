@@ -1,0 +1,22 @@
+ - name: Config Masters and Slaves
+   hosts: slave,master
+     # become: True
+   remote_user: ubuntu
+   become: yes
+   become_method: sudo
+   become_user: root
+   gather_facts: yes
+   connection: ssh
+   tasks:
+       - name: install additional packages 
+         apt:
+           name: apt-transport-https 
+           state: latest
+           update_cache: true
+         become: true
+         #       apt: name=update_cache=yes cache_valid_time=3600 
+         #     - apt: name=ca-certificates update_cache=yes cache_valid_time=3600
+         #     - apt: name=curl update_cache=yes cache_valid_time=3600
+         #     - apt: name=gnupg-agent update_cache=yes cache_valid_time=3600
+         #     - apt: name=software-properties-common update_cache=yes cache_valid_time=3600
+         #         
