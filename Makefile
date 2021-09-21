@@ -1,6 +1,8 @@
 _ansible:
 	cd ansible/ && \
-	./get_ip.sh
+	./get_ip.sh &&\
+	ansible -m ping all && \
+	ansible-playbook play-books/k8s_all.yaml
 
 destroy: destroy_instance destroy_network destroy_s3
 apply: apply_s3 apply_network apply_instance

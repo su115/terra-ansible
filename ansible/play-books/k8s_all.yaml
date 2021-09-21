@@ -1,22 +1,77 @@
- - name: Config Masters and Slaves
-   hosts: slave,master
-     # become: True
-   remote_user: ubuntu
-   become: yes
-   become_method: sudo
-   become_user: root
-   gather_facts: yes
-   connection: ssh
+ - name: test
+   hosts: 
+    - master
+      #    - slave
+   become: True
    tasks:
-       - name: install additional packages 
-         apt:
-           name: apt-transport-https 
-           state: latest
-           update_cache: true
-         become: true
-         #       apt: name=update_cache=yes cache_valid_time=3600 
-         #     - apt: name=ca-certificates update_cache=yes cache_valid_time=3600
-         #     - apt: name=curl update_cache=yes cache_valid_time=3600
-         #     - apt: name=gnupg-agent update_cache=yes cache_valid_time=3600
-         #     - apt: name=software-properties-common update_cache=yes cache_valid_time=3600
-         #         
+     - name: install packages
+       become: True
+       apt:
+         name:
+           - apt-transport-https
+           - ca-certificates
+           - curl 
+           - gnupg-agent
+           - software-properties-common
+         update_cache: yes
+         cache_valid_time: 3600
+
+     - name: add key docker
+       apt_key:
+         url: "https://download.docker.com/linux/ubuntu/gpg"
+
+     - name: add docker repo
+       apt_repository:
+         repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+     - name: install docker
+       become: True
+       apt:
+         name:
+           - docker-ce=5:19.03.10~3-0~ubuntu-focal 
+           - containerd.io
+         update_cache: yes
+         cache_valid_time: 3600
+
+     - name: add key k8s
+       apt_key:
+         url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+
+     - name: add k8s repo
+       apt_repository:
+         repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+
+     - name: install k8s
+       become: True
+       apt:
+         name:
+          - kubeadm=1.19.2-00
+          - kubelet=1.19.2-00 
+          - kubectl=1.19.2-00
+         update_cache: yes
+         cache_valid_time: 3600
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
